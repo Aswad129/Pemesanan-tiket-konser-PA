@@ -12,7 +12,7 @@ def login():
             reader = csv.DictReader(file)
             for u in reader:
                 if u["username"] == username and u["password"] == password:
-                    print(f"✅ Login berhasil sebagai {u['role'].upper()}!")
+                    print(f" Login berhasil sebagai {u['role'].upper()}!")
                     return username, u["role"]
     except FileNotFoundError:
         pass
