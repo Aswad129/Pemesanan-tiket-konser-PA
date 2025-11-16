@@ -18,7 +18,7 @@ def load_animation(text="loading"):
         print("\r", end="")
 
 def menu_utama():
-    print(colored("=== SELAMAT DATANG DI SISTEM PENJUALAN TIKET KONSER ===", "yellow", attrs=["bold"]))
+    print(colored("=== SELAMAT DATANG DI SISTEM PENJUALAN TIKET KONSER ===", "cyan", attrs=["bold"]))
 
 
     pertanyaan = [
