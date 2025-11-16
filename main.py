@@ -1,29 +1,53 @@
 import os 
 from user import menu_user
 from auth import register, login
+import time
+import sys
+from termcolor import colored
+import inquirer
 
+
+def load_animation(text="loading"):
+    animasi = ["[■□□□□□□□□□]", "[■■□□□□□□□□]", "[■■■□□□□□□□]", "[■■■■□□□□□□]",
+               "[■■■■■□□□□□]", "[■■■■■■□□□□]", "[■■■■■■■□□□]", "[■■■■■■■■□□]", 
+               "[■■■■■■■■■□]", "[■■■■■■■■■■]"]
+    for i in range(20):
+        time.sleep(0.2)
+        sys.stdout.write("\r" + colored(f"{text} {animasi[i % len(animasi)]}", 'yellow'))
+        sys.stdout.flush()
+        print("\r", end="")
 
 def menu_utama():
-    print("=== Menu Utama ===")
-    print("1. REGISTER")
-    print("2. LOGIN")
-    print("3. EXIT")
+    print(colored("=== SELAMAT DATANG DI SISTEM PENJUALAN TIKET KONSER ===", "yellow", attrs=["bold"]))
 
-    pilihan = input("Pilih opsi (1-3): ")
 
-    if pilihan == "1":
+    pertanyaan = [
+        inquirer.List(
+            'pilihan',
+            message="Pilih Opsi di bawah ini:",
+            choices=['REGISTER', 'LOGIN', 'EXIT'],
+        ),
+    ]
+
+    jawaban = inquirer.prompt(pertanyaan)
+    pilihan = jawaban['pilihan']
+
+    if pilihan == "REGISTER":
         register() 
-    elif pilihan == "2":
+        load_animation("memproses registrasi")
+    elif pilihan == "LOGIN":
         username, role = login()
+        load_animation("memproses login")
+
         if role == "admin":
             print(f"Selamat datang, Admin {username}!")
         elif role == "user":
            print(f"Selamat datang, User {username}!")
-    elif pilihan == "3":
+    elif pilihan == "EXIT":
         print("Keluar dari program.")
     else:
-        print("Pilihan tidak valid. Silakan coba lagi.")
-        menu_utama()
+        print(colored("Pilihan tidak valid. Silakan coba lagi.", "red"))
+        return
 
 if __name__ == "__main__":
     menu_utama()
