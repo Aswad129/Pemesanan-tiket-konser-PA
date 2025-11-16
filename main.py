@@ -1,35 +1,29 @@
-from InquirerPy import inquirer
-
-def main ():
-    while True:
-        print("SELAMAT DATANG DI PROGRAM KAMI")
-        print("\n==== SISTEM PEMESANAN TIKET KONSER ====")
-
-        pilihan = inquirer.select(
-            message="Pilih menu utama:",
-            choices=[
-                "🔐 Login",
-                "📝 Register",
-                "🚪 Keluar"
-            ],
-            default="🔐 Login"
-        ).execute()
-        # print("1. REGISTER")
-        # print("2. LOGIN")
-        # print("3. EXIT")
-        # try :
-        #     pilihan = int(input("Masukkan pilihan Anda (1/2/3): "))
-        # except ValueError:
-        #     print("Input tidak valid. Silakan masukkan angka 1, 2, atau 3.")
-        #     continue
-
-        # if pilihan == 1:
-        
-
-        # else if pilihan == 2:
+import os 
+from user import menu_user
+from auth import register, login
 
 
-        # else if pilihan == 3:
+def menu_utama():
+    print("=== Menu Utama ===")
+    print("1. REGISTER")
+    print("2. LOGIN")
+    print("3. EXIT")
 
-        # else:
-        #     print("Pilihan tidak valid. Silakan coba lagi.")
+    pilihan = input("Pilih opsi (1-3): ")
+
+    if pilihan == "1":
+        register() 
+    elif pilihan == "2":
+        username, role = login()
+        if role == "admin":
+            print(f"Selamat datang, Admin {username}!")
+        elif role == "user":
+           print(f"Selamat datang, User {username}!")
+    elif pilihan == "3":
+        print("Keluar dari program.")
+    else:
+        print("Pilihan tidak valid. Silakan coba lagi.")
+        menu_utama()
+
+if __name__ == "__main__":
+    menu_utama()
