@@ -17,7 +17,7 @@ def login():
     except FileNotFoundError:
         pass
 
-    print("❌ Login gagal! Username atau password salah.")
+    print(" Login gagal! Username atau password salah.")
     return None, None
 
 def register():
@@ -31,7 +31,7 @@ def register():
             reader = csv.DictReader(file)
             for u in reader:
                 if u["username"] == username:
-                    print("❌ Username sudah digunakan.")
+                    print(" Username sudah digunakan!")
                     return
     except FileNotFoundError:
         pass
@@ -44,4 +44,4 @@ def register():
             writer.writeheader()
         writer.writerow({"username": username, "password": password, "role": "user"})
 
-    print("✅ Registrasi berhasil!")
+    print(" Registrasi berhasil!")
