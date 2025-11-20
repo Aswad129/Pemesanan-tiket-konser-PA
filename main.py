@@ -1,53 +1,50 @@
-import os 
+import os
 from user import menu_user
 from auth import register, login
-import time
-import sys
 from termcolor import colored
 import inquirer
+from admin import menu_admin
+from user import menu_user
 
-
-def load_animation(text="loading"):
-    animasi = ["[■□□□□□□□□□]", "[■■□□□□□□□□]", "[■■■□□□□□□□]", "[■■■■□□□□□□]",
-               "[■■■■■□□□□□]", "[■■■■■■□□□□]", "[■■■■■■■□□□]", "[■■■■■■■■□□]", 
-               "[■■■■■■■■■□]", "[■■■■■■■■■■]"]
-    for i in range(20):
-        time.sleep(0.2)
-        sys.stdout.write("\r" + colored(f"{text} {animasi[i % len(animasi)]}", 'yellow'))
-        sys.stdout.flush()
-        print("\r", end="")
 
 def menu_utama():
-    print(colored("=== SELAMAT DATANG DI SISTEM PENJUALAN TIKET KONSER ===", "cyan", attrs=["bold"]))
-
+    print(
+        colored(
+            "=== SELAMAT DATANG DI SISTEM PENJUALAN TIKET KONSER ===",
+            "cyan",
+            attrs=["bold"],
+        )
+    )
 
     pertanyaan = [
         inquirer.List(
-            'pilihan',
-            message="Pilih Opsi di bawah ini:",
-            choices=['REGISTER', 'LOGIN', 'EXIT'],
+            "pilihan",
+            message=colored("Pilih Opsi di bawah ini:", "cyan"),
+            choices=["REGISTER", "LOGIN", "EXIT"],
         ),
     ]
 
     jawaban = inquirer.prompt(pertanyaan)
-    pilihan = jawaban['pilihan']
+    pilihan = jawaban["pilihan"]
 
     if pilihan == "REGISTER":
-        register() 
-        load_animation("memproses registrasi")
+        register()
     elif pilihan == "LOGIN":
         username, role = login()
-        load_animation("memproses login")
 
         if role == "admin":
             print(f"Selamat datang, Admin {username}!")
+            menu_admin(username)
+
         elif role == "user":
-           print(f"Selamat datang, User {username}!")
+            print(f"Selamat datang, User {username}!")
+            menu_user(username)
+
     elif pilihan == "EXIT":
-        print("Keluar dari program.")
-    else:
-        print(colored("Pilihan tidak valid. Silakan coba lagi.", "red"))
-        return
+        print(colored("Keluar dari program.", "green"))
+        exit()
+
 
 if __name__ == "__main__":
-    menu_utama()
+    while True:
+        menu_utama()
