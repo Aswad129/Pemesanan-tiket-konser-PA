@@ -1,58 +1,143 @@
-def tambah_data(data_list, new_data):
-    """
-    Menambahkan data baru ke dalam daftar data.
+import csv
+from prettytable import PrettyTable
+import pyfiglet
+from termcolor import colored
+import matplotlib.pyplot as plt
 
-    Args:
-        data_list (list): Daftar data yang ada.
-        new_data: Data baru yang akan ditambahkan.
-
-    Returns:
-        list: Daftar data yang telah diperbarui dengan data baru.
-    """
-    data_list.append(new_data)
-    return data_list
+CONCERT_FILE = "concerts.csv"
 
 
-def view_data():
-    """
-    Menampilkan data yang ada dalam daftar data.  
-
-    Returns:
-        list: Daftar data yang ada.
-    """
-    # Contoh data awal
-    data_list = ["data1", "data2", "data3"]
-    return data_list
+def header_konser():
+    header = pyfiglet.figlet_format("DAFTAR KONSER", font="slant")
+    print(colored(header, "cyan"))
 
 
-def update_data(data_list, index, updated_data):
-    """
-    Memperbarui data pada indeks tertentu dalam daftar data.
-
-    Args:
-        data_list (list): Daftar data yang ada.
-        index (int): Indeks data yang akan diperbarui.
-        updated_data: Data baru yang akan menggantikan data lama.
-
-    Returns:
-        list: Daftar data yang telah diperbarui.
-    """
-    if 0 <= index < len(data_list):
-        data_list[index] = updated_data
-    return data_list
+def baca_konser():
+    concerts = []
+    try:
+        with open(CONCERT_FILE, mode="r", newline="", encoding="utf-8") as file:
+            reader = csv.DictReader(file)
+            concerts = list(reader)
+    except FileNotFoundError:
+        pass
+    return concerts
 
 
-def hapus_data(data_list, index):
-    """
-    Menghapus data pada indeks tertentu dalam daftar data.
+def simpan_konser(concerts):
+    with open(CONCERT_FILE, mode="w", newline="", encoding="utf-8") as file:
+        fieldnames = ["id", "nama", "tanggal", "lokasi", "harga", "stok"]
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(concerts)
 
-    Args:
-        data_list (list): Daftar data yang ada.
-        index (int): Indeks data yang akan dihapus.
 
-    Returns:
-        list: Daftar data yang telah diperbarui setelah penghapusan.
-    """
-    if 0 <= index < len(data_list):
-        del data_list[index]
-    return data_list
+def tambah_konser():
+    concerts = baca_konser()
+    print("\n=== Tambah Konser ===")
+    nama = input("Nama konser: ")
+    tanggal = input("Tanggal (dd-mm-yyyy): ")
+    lokasi = input("Lokasi: ")
+    harga = input("Harga tiket: ")
+    stok = input("Jumlah tiket: ")
+
+    konser_id = str(len(concerts) + 1)
+
+    concerts.append(
+        {
+            "id": konser_id,
+            "nama": nama,
+            "tanggal": tanggal,
+            "lokasi": lokasi,
+            "harga": harga,
+            "stok": stok,
+        }
+    )
+
+    simpan_konser(concerts)
+    print("✅ Konser berhasil ditambahkan!")
+
+
+def lihat_konser():
+    concerts = baca_konser()
+    if not concerts:
+        print("Belum ada konser.")
+        return
+
+    table = PrettyTable()
+    table.field_names = ["ID", "Nama Konser", "Tanggal", "Lokasi", "Harga", "Stok"]
+
+    for c in concerts:
+        table.add_row(
+            [c["id"], c["nama"], c["tanggal"], c["lokasi"], c["harga"], c["stok"]]
+        )
+
+    header_konser()
+    print(colored(table, "green"))
+
+
+def edit_konser():
+    concerts = baca_konser()
+    lihat_konser()
+    konser_id = input("Masukkan ID konser yang ingin diedit: ")
+
+    for c in concerts:
+        if c["id"] == konser_id:
+            c["nama"] = input(f"Nama ({c['nama']}): ") or c["nama"]
+            c["tanggal"] = input(f"Tanggal ({c['tanggal']}): ") or c["tanggal"]
+            c["lokasi"] = input(f"Lokasi ({c['lokasi']}): ") or c["lokasi"]
+            c["harga"] = input(f"Harga ({c['harga']}): ") or c["harga"]
+            c["stok"] = input(f"Stok ({c['stok']}): ") or c["stok"]
+
+            simpan_konser(concerts)
+            print("✅ Data konser diperbarui!")
+            return
+
+    print("❌ ID tidak ditemukan.")
+
+
+def hapus_konser():
+    concerts = baca_konser()
+    lihat_konser()
+    konser_id = input("Masukkan ID konser yang ingin dihapus: ")
+
+    new_list = [c for c in concerts if c["id"] != konser_id]
+    simpan_konser(new_list)
+    print("✅ Konser berhasil dihapus!")
+
+
+def diagram_konser():
+    concerts = baca_konser()
+    if not concerts:
+        print("Belum ada data konser.")
+        return
+
+    nama_konser = [c["nama"] for c in concerts]
+    stok = [int(c["stok"]) for c in concerts]
+    harga = [float(c["harga"]) for c in concerts]
+
+    # Diagram Stok Tiket
+    plt.figure(figsize=(10, 5))
+    plt.bar(nama_konser, stok)
+    plt.title("Jumlah Stok Tiket per Konser")
+    plt.xlabel("Nama Konser")
+    plt.ylabel("Jumlah Stok")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+
+    # Diagram Harga Tiket
+    plt.figure(figsize=(10, 5))
+    plt.bar(nama_konser, harga)
+    plt.title("Harga Tiket per Konser")
+    plt.xlabel("Nama Konser")
+    plt.ylabel("Harga (Rp)")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+
+    # Chart Pembagian Stok
+    plt.figure(figsize=(8, 8))
+    plt.pie(stok, labels=nama_konser, autopct="%1.1f%%")
+    plt.title("Persentase Pembagian Stok Tiket")
+    plt.tight_layout()
+    plt.show()
