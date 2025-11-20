@@ -15,7 +15,7 @@ def menu_user(username):
         if pilihan == "1":
             lihat_konser()
         elif pilihan == "2":
-            pesan_tiket(username)               # username diperlukan untuk simpan tiket
+            pesan_tiket(username)               
         elif pilihan == "3":
             lihat_tiket(username)               # === FITUR TIKET ===
         elif pilihan == "0":
