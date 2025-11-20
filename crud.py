@@ -54,7 +54,7 @@ def tambah_konser():
     )
 
     simpan_konser(concerts)
-    print("✅ Konser berhasil ditambahkan!")
+    print("Konser berhasil ditambahkan!")
 
 
 def lihat_konser():
@@ -89,10 +89,10 @@ def edit_konser():
             c["stok"] = input(f"Stok ({c['stok']}): ") or c["stok"]
 
             simpan_konser(concerts)
-            print("✅ Data konser diperbarui!")
+            print("Data konser berhasil diperbarui!")
             return
 
-    print("❌ ID tidak ditemukan.")
+    print("ID tidak ditemukan.")
 
 
 def hapus_konser():
@@ -102,7 +102,7 @@ def hapus_konser():
 
     new_list = [c for c in concerts if c["id"] != konser_id]
     simpan_konser(new_list)
-    print("✅ Konser berhasil dihapus!")
+    print("Konser berhasil dihapus!")
 
 
 def diagram_konser():
@@ -112,32 +112,14 @@ def diagram_konser():
         return
 
     nama_konser = [c["nama"] for c in concerts]
-    stok = [int(c["stok"]) for c in concerts]
-    harga = [float(c["harga"]) for c in concerts]
+    terjual = [int(c["terjual"]) for c in concerts]
 
-    # Diagram Stok Tiket
+    # Diagram Batang Tiket Terjual
     plt.figure(figsize=(10, 5))
-    plt.bar(nama_konser, stok)
-    plt.title("Jumlah Stok Tiket per Konser")
+    plt.bar(nama_konser, terjual)
+    plt.title("Jumlah Tiket Terjual per Konser")
     plt.xlabel("Nama Konser")
-    plt.ylabel("Jumlah Stok")
+    plt.ylabel("Tiket Terjual")
     plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.show()
-
-    # Diagram Harga Tiket
-    plt.figure(figsize=(10, 5))
-    plt.bar(nama_konser, harga)
-    plt.title("Harga Tiket per Konser")
-    plt.xlabel("Nama Konser")
-    plt.ylabel("Harga (Rp)")
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.show()
-
-    # Chart Pembagian Stok
-    plt.figure(figsize=(8, 8))
-    plt.pie(stok, labels=nama_konser, autopct="%1.1f%%")
-    plt.title("Persentase Pembagian Stok Tiket")
     plt.tight_layout()
     plt.show()
