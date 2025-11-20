@@ -31,7 +31,7 @@ def register():
             reader = csv.DictReader(file)
             for u in reader:
                 if u["username"] == username:
-                    print(" Username sudah digunakan!")
+                    print(" Username sudah digunakan!!!")
                     return
     except FileNotFoundError:
         pass
