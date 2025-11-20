@@ -1,6 +1,10 @@
 username,password,role
 <<<<<<< HEAD
+<<<<<<< HEAD
 admin,adminpass1234,admin
 =======
 >>>>>>> 146f6d885a90f0164dfa10eb39ce3c2d835c0cf5
+=======
+admin,adminpass1234,admin
+>>>>>>> 40d77dd (fix error)
 aswad,1234,user
