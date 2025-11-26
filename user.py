@@ -28,7 +28,7 @@ def menu_user(username):
         ]
 
         jawaban = inquirer.prompt(pertanyaan)
-        pilihan = jawaban["pilihan"][0]  # ambil nomor pilihan saja
+        pilihan = jawaban["pilihan"][0]  
 
         if pilihan == "1":
             lihat_konser()
