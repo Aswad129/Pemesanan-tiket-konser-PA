@@ -65,7 +65,7 @@ def tambah_konser():
 def lihat_konser():
     concerts = baca_konser()
     if not concerts:
-        print("Belum ada konser.")
+        print("Belum ada konser yang di tambahkan")
         return
 
     table = PrettyTable()
@@ -100,7 +100,7 @@ def edit_konser():
             print("Data konser berhasil diperbarui!")
             return
 
-    print("ID tidak ditemukan.")
+    print("ID konser tidak ditemukan.")
 
 
 def hapus_konser():
@@ -116,7 +116,7 @@ def hapus_konser():
 def diagram_konser():
     concerts = baca_konser()
     if not concerts:
-        print("Belum ada data konser.")
+        print("Belum ada data konser yang di tambahkan")
         return
 
     nama_konser = [c.get("nama", "-") for c in concerts]
