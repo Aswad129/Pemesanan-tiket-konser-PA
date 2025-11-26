@@ -4,6 +4,7 @@ import pyfiglet
 from termcolor import colored
 import matplotlib.pyplot as plt
 
+
 CONCERT_FILE = "concerts.csv"
 
 
