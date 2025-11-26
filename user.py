@@ -53,7 +53,7 @@ def baca_konser():
 
 def simpan_konser(concerts):
     with open(CONCERT_FILE, mode="w", newline="", encoding="utf-8") as file:
-        fieldnames = ["id", "nama", "tanggal", "lokasi", "harga", "stok"]
+        fieldnames = ["id", "nama", "tanggal", "lokasi", "harga", "stok", "terjual"]
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(concerts)
