@@ -40,7 +40,7 @@ def login():
             reader = csv.DictReader(file)
             for u in reader:
                 if u["username"] == username and u["password"] == password:
-                    print(f" Login berhasil sebagai {u['role'].upper()}!")
+                    print(colored(f" Login berhasil sebagai {u['role'].upper()}!", "green"))
                     return username, u["role"]
     except FileNotFoundError:
         pass
@@ -78,4 +78,4 @@ def register():
 
         writer.writerow({"username": username, "password": password, "role": "user"})
 
-    print(" Registrasi berhasil!")
+    print(colored(" Registrasi berhasil!", "green"))
