@@ -11,6 +11,9 @@ def header_konser():
     header = pyfiglet.figlet_format("DAFTAR KONSER", font="slant")
     print(colored(header, "cyan"))
 
+def format_rupiah(angka):
+    angka = int(angka)
+    return f"Rp {angka:,.0f}".replace(",", ".") + ",-"
 
 def baca_konser():
     concerts = []
@@ -25,7 +28,7 @@ def baca_konser():
 
 def simpan_konser(concerts):
     with open(CONCERT_FILE, mode="w", newline="", encoding="utf-8") as file:
-        fieldnames = ["id", "nama", "tanggal", "lokasi", "harga", "stok"]
+        fieldnames = ["id", "nama", "tanggal", "lokasi", "harga", "stok", "terjual"]
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(concerts)
@@ -50,6 +53,7 @@ def tambah_konser():
             "lokasi": lokasi,
             "harga": harga,
             "stok": stok,
+            "terjual": "0",
         }
     )
 
@@ -65,14 +69,17 @@ def lihat_konser():
 
     table = PrettyTable()
     table.field_names = ["ID", "Nama Konser", "Tanggal", "Lokasi", "Harga", "Stok"]
+    
 
     for c in concerts:
+        harga_format = format_rupiah(c["harga"])
         table.add_row(
-            [c["id"], c["nama"], c["tanggal"], c["lokasi"], c["harga"], c["stok"]]
+            [c["id"], c["nama"], c["tanggal"], c["lokasi"], harga_format, c["stok"]]
         )
 
     header_konser()
     print(colored(table, "green"))
+
 
 
 def edit_konser():
@@ -111,10 +118,9 @@ def diagram_konser():
         print("Belum ada data konser.")
         return
 
-    nama_konser = [c["nama"] for c in concerts]
-    terjual = [int(c["terjual"]) for c in concerts]
+    nama_konser = [c.get("nama", "-") for c in concerts]
+    terjual = [int(c.get("terjual", 0) or 0) for c in concerts]
 
-    # Diagram Batang Tiket Terjual
     plt.figure(figsize=(10, 5))
     plt.bar(nama_konser, terjual)
     plt.title("Jumlah Tiket Terjual per Konser")
