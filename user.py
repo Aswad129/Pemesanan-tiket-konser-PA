@@ -32,12 +32,16 @@ def menu_user(username):
         pilihan = jawaban["pilihan"][0]  
 
         if pilihan == "1":
+            os.system("cls" if os.name == "nt" else "clear")
             lihat_konser()
         elif pilihan == "2":
+            os.system("cls" if os.name == "nt" else "clear")
             pesan_tiket(username)
         elif pilihan == "3":
+            os.system("cls" if os.name == "nt" else "clear")
             lihat_tiket(username)
         elif pilihan == "0":
+            os.system("cls" if os.name == "nt" else "clear")
             break
 
 def baca_konser():
