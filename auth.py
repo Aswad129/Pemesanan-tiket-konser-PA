@@ -68,12 +68,12 @@ def register():
     except FileNotFoundError:
         pass
 
-    # Simpan user baru
+    # user baru
     with open(USER_FILE, mode="a", newline="", encoding="utf-8") as file:
         fieldnames = ["username", "password", "role"]
         writer = csv.DictWriter(file, fieldnames=fieldnames)
 
-        if file.tell() == 0:  # file masih kosong → tulis header
+        if file.tell() == 0:  
             writer.writeheader()
 
         writer.writerow({"username": username, "password": password, "role": "user"})
