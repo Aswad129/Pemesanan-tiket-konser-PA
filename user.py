@@ -1,8 +1,9 @@
 import csv
 from prettytable import PrettyTable
-from crud import lihat_konser
+from crud import lihat_konser, format_rupiah
 from termcolor import colored
 import inquirer
+import os
 
 CONCERT_FILE = "concerts.csv"
 TICKET_FILE = (
@@ -61,10 +62,8 @@ def simpan_konser(concerts):
 def pesan_tiket(username):
     concerts = baca_konser()
 
-    # tampilkan konser dalam prettytable
     lihat_konser()
 
-    # input tambahan customer
     nama_customer = input("Masukkan nama customer: ")
 
     konser_id = input("Masukkan ID konser: ")
@@ -78,32 +77,49 @@ def pesan_tiket(username):
 
             if jumlah <= stok:
                 c["stok"] = str(stok - jumlah)
+                terjual_lama = int(c.get("terjual", 0))
+                c["terjual"] = str(terjual_lama + jumlah)
                 total = harga * jumlah
                 simpan_konser(concerts)
 
                 # simpan tiket
+                file_baru = not os.path.exists(TICKET_FILE)
                 with open(TICKET_FILE, mode="a", newline="", encoding="utf-8") as file:
                     writer = csv.writer(file)
+
+                    if file_baru:
+                        writer.writerow(
+                            [
+                                "username",
+                                "nama_pelanggan",
+                                "nama_konser",
+                                "jumlah_tiket",
+                                "total",
+                            ]
+                        )
                     writer.writerow(
-                        [username, nama_customer, konser_id, nama_konser, jumlah, total]
+                        [username, nama_customer, nama_konser, jumlah, total]
                     )
 
-                print("\n=== STRUK PEMBELIAN ===")
-                print(f"Nama Customer : {nama_customer}")
-                print(f"Konser        : {nama_konser}")
-                print(f"Jumlah        : {jumlah}")
-                print(f"Total Bayar   : Rp {total}")
+                print(colored("\n" + "="*35, "green"))
+                print(colored("|         STRUK PEMBELIAN         |", "green"))
+                print(colored("="*35, "green"))
+                print(colored(f"| Nama Customer : {nama_customer:<12}    |", "green"))
+                print(colored(f"| Konser        : {nama_konser:<12}    |", "green"))
+                print(colored(f"| Jumlah Tiket  : {jumlah:<12}    |", "green"))
+                print(colored(f"| Total Bayar   : {format_rupiah(total):<12}    |", "green"))
+                print(colored("="*35, "green"))
                 return
 
             else:
-                print(" Stok tidak cukup!")
+                print(colored(" Stok tidak cukup!", "red"))
                 return
 
-    print(" ID konser tidak ditemukan.")
+    print(colored(" ID konser tidak ditemukan.", "red"))
 
 
 def lihat_tiket(username):
-    print("\n=== TIKET YANG ANDA PESAN ===")
+    print(colored("\n================== TIKET YANG ANDA PESAN ==================", "cyan", attrs=["bold"]))
 
     table = PrettyTable()
     table.field_names = ["Nama Customer", "Konser", "Jumlah Tiket", "Total Bayar"]
@@ -113,19 +129,23 @@ def lihat_tiket(username):
             reader = csv.reader(file)
             found = False
 
+            next(reader, None)
+
             for row in reader:
-                if len(row) < 6:
+                if not row or len(row) < 5:
                     continue
 
-                usr, nama_customer, konser_id, nama_konser, qty, total = row
+                usr, nama_customer, nama_konser, qty, total = row
 
                 if usr == username:
                     found = True
-                    table.add_row([nama_customer, nama_konser, qty, total])
+                    total_format = format_rupiah(total)
+                    table.add_row([nama_customer, nama_konser, qty, total_format])
 
             if found:
-                print(table)
+                print(colored(table, "green"))
             else:
-                print("Anda belum memesan tiket.")
+                print(colored(" Anda belum memesan tiket.", "red"))
+
     except FileNotFoundError:
-        print("Belum ada tiket tercatat.")
+        print(colored(" Belum ada tiket tercatat.", "red"))
