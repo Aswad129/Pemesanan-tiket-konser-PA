@@ -1,6 +1,7 @@
 from termcolor import colored
 import inquirer
 from crud import tambah_konser, lihat_konser, edit_konser, hapus_konser, diagram_konser
+import os
 
 
 def menu_admin(username):
@@ -23,19 +24,25 @@ def menu_admin(username):
         ]
 
         jawaban = inquirer.prompt(pertanyaan)
-        pilihan = jawaban["pilihan"][0]  # ambil nomor pilihan saja
+        pilihan = jawaban["pilihan"][0] 
 
         if pilihan == "1":
+            os.system("cls" if os.name == "nt" else "clear")
             tambah_konser()
         elif pilihan == "2":
+            os.system("cls" if os.name == "nt" else "clear")
             lihat_konser()
         elif pilihan == "3":
+            os.system("cls" if os.name == "nt" else "clear")
             edit_konser()
         elif pilihan == "4":
+            os.system("cls" if os.name == "nt" else "clear")
             hapus_konser()
         elif pilihan == "5":
+            os.system("cls" if os.name == "nt" else "clear")
             diagram_konser()
         elif pilihan == "0":
+            os.system("cls" if os.name == "nt" else "clear")
             break
         else:
             print(" Pilihan tidak valid!")
