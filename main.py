@@ -33,11 +33,11 @@ def menu_utama():
         username, role = login()
 
         if role == "admin":
-            print(f"Selamat datang, Admin {username}!")
+            print(f"Selamat datang, {username}!")
             menu_admin(username)
 
         elif role == "user":
-            print(f"Selamat datang, User {username}!")
+            print(f"Selamat datang, {username}!")
             menu_user(username)
 
     elif pilihan == "EXIT":
