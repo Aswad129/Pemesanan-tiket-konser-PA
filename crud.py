@@ -124,7 +124,7 @@ def diagram_konser():
 
     plt.figure(figsize=(10, 5))
     plt.bar(nama_konser, terjual)
-    plt.title("Jumlah Tiket Terjual per Konser")
+    plt.title("Statistik Tiket Konser yang Terjual")
     plt.xlabel("Nama Konser")
     plt.ylabel("Tiket Terjual")
     plt.xticks(rotation=45)
