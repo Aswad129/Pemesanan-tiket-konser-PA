@@ -2,6 +2,7 @@ import csv
 import time
 import sys
 from termcolor import colored
+import os
 
 USER_FILE = "users.csv"
 
@@ -34,6 +35,7 @@ def login():
     username = input("Username: ")
     password = input("Password: ")
     load_animation("Memeriksa data...")
+    os.system("cls" if os.name == "nt" else "clear")
 
     try:
         with open(USER_FILE, mode="r", newline="", encoding="utf-8") as file:
@@ -54,6 +56,7 @@ def register():
     username = input("Username baru: ").strip()
     password = input("Password: ").strip()
     load_animation("Memproses registrasi...")
+    os.system("cls" if os.name == "nt" else "clear")
 
     # Cek username sudah ada
     try:
